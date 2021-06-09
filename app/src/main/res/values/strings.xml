@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">photoPlan</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_location">Локации</string>
+    <string name="streets">Улицы</string>
+    <string name="delete">Удалить</string>
+    <string name="location_name">Название локации</string>
+    <string name="adds_new_folder">Добавляет новую папку</string>
+    <string name="adds_new_image">Загрузить фотографию</string>
+
+
+</resources>
