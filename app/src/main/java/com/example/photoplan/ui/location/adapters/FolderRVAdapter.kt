@@ -10,12 +10,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.photoplan.Location
+import com.example.photoplan.PhotoPlanApplication
 import com.example.photoplan.R
+import com.example.photoplan.ui.ImageDialog.ImageExpandDialog
 import com.example.photoplan.ui.location.presentor.FolderPresenter
 import com.example.photoplan.ui.location.FolderView
 import kotlinx.android.synthetic.main.grid_image_rv_item.view.*
 
-class FolderRVAdapter(location: Location): RecyclerView.Adapter<FolderRVAdapter.FolderViewHolder>(),
+class FolderRVAdapter(location: Location) :
+    RecyclerView.Adapter<FolderRVAdapter.FolderViewHolder>(),
     FolderView {
 
     @InjectPresenter
@@ -35,8 +38,8 @@ class FolderRVAdapter(location: Location): RecyclerView.Adapter<FolderRVAdapter.
     override fun onBindViewHolder(holder: FolderViewHolder, position: Int) {
         holder.imageView.setImageDrawable(presenter.getImage(position))
 
-        holder.imageView.setOnClickListener{
-            //TODO expand image
+        holder.imageView.setOnClickListener {
+            presenter.expandImage(holder.imageView.context, holder.adapterPosition)
         }
     }
 
