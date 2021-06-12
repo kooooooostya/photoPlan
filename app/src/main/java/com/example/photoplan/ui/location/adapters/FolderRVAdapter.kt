@@ -1,8 +1,11 @@
 package com.example.photoplan.ui.location.adapters
 
+import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -22,6 +25,7 @@ class FolderRVAdapter(location: Location): RecyclerView.Adapter<FolderRVAdapter.
         presenter = FolderPresenter(location)
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
         return FolderViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.grid_image_rv_item, parent, false)
@@ -32,7 +36,7 @@ class FolderRVAdapter(location: Location): RecyclerView.Adapter<FolderRVAdapter.
         holder.imageView.setImageDrawable(presenter.getImage(position))
 
         holder.imageView.setOnClickListener{
-            //TODO
+            //TODO expand image
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.photoplan.ui.location
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +14,16 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.photoplan.R
 import com.example.photoplan.ui.location.adapters.SectionRVAdapter
 import com.example.photoplan.ui.location.presentor.LocationPresenter
+import com.example.photoplan.ui.location.presentor.SectionRVPresenter
 import kotlinx.android.synthetic.main.fragment_location.*
 
 class LocationFragment : Fragment(), LocationView {
 
     @InjectPresenter
     lateinit var presenter: LocationPresenter
+
+    lateinit var sectionRVAdapter: SectionRVAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +41,7 @@ class LocationFragment : Fragment(), LocationView {
         et_location_name.setText(presenter.getName())
 
         //TODO test
-        et_location_name.addTextChangedListener(object : TextWatcher{
+        et_location_name.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -50,7 +56,11 @@ class LocationFragment : Fragment(), LocationView {
         et_location_name.isFocusable = false
 
         location_rv.layoutManager = LinearLayoutManager(requireContext())
-        location_rv.adapter = SectionRVAdapter(presenter.getLocations())
+        sectionRVAdapter = SectionRVAdapter(
+            requireActivity(),
+            requireActivity().activityResultRegistry,
+            presenter.getLocations()
+        )
+        location_rv.adapter = sectionRVAdapter
     }
-
 }

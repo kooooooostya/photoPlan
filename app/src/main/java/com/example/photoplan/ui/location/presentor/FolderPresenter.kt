@@ -7,7 +7,7 @@ import com.example.photoplan.Location
 import com.example.photoplan.ui.location.FolderView
 
 @InjectViewState
-class FolderPresenter(private val location: Location): MvpPresenter<FolderView>() {
+class FolderPresenter(private val location: Location): MvpPresenter<FolderView>(){
 
     fun getImagesCount(): Int{
         return location.getImageCount()
@@ -16,4 +16,5 @@ class FolderPresenter(private val location: Location): MvpPresenter<FolderView>(
     fun getImage(position: Int): Drawable{
         return location.getImage(position)
     }
+
 }

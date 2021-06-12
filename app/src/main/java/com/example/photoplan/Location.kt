@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 class Location(var name: String = "", private val imageList: ArrayList<Drawable> = ArrayList()) {
 
     fun addImage(image: Drawable) {
-        imageList.add(image)
+        imageList.add(0, image)
     }
 
     fun getImage(index: Int): Drawable {

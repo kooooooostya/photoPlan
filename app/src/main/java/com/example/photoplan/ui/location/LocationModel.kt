@@ -40,7 +40,7 @@ class LocationModel(context: Context) {
     }
 
     private fun saveAll(){
-        dbRef.setValue(mPlace)
+        //dbRef.setValue(mPlace)
     }
 
     fun addLocation(location: Location){
