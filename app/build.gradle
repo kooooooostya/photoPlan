@@ -2,6 +2,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -44,13 +45,14 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //moxy
-    implementation 'com.github.moxy-community:moxy:2.2.0'
-    implementation "com.github.moxy-community:moxy-androidx:2.2.0"
-    kapt 'com.github.moxy-community:moxy-compiler:2.2.0'
+    implementation 'com.arello-mobile:moxy:1.5.5'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
+    kapt 'com.arello-mobile:moxy-compiler:1.5.5'
 
 }

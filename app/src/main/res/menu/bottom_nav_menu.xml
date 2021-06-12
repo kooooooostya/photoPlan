@@ -15,7 +15,6 @@
         android:title="" />
 
     <item
-
         android:icon="@drawable/ic_moodboard"
         android:title="@string/title_notifications" />
 

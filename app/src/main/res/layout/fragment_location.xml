@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".ui.location.LocationFragment">
 
     <androidx.cardview.widget.CardView
@@ -17,52 +16,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/medium_padding"
-            android:paddingTop="@dimen/medium_padding"
-            android:paddingRight="@dimen/medium_padding">
+            android:paddingLeft="@dimen/large_padding"
+            android:paddingTop="@dimen/large_padding"
+            android:paddingRight="@dimen/large_padding">
 
-            <TextView
-                android:id="@+id/text_home"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_smears"
+                android:layout_height="?actionBarSize"
+                app:layout_constraintBottom_toTopOf="@+id/et_location_name"
+                app:layout_constraintEnd_toEndOf="@+id/et_location_name"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_margin="@dimen/large_padding"
+                android:padding="@dimen/medium_padding"
+                app:layout_constraintStart_toStartOf="@+id/et_location_name"
+                app:layout_constraintTop_toTopOf="parent">
 
-                android:gravity="center"
-                android:text="@string/title_location"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.084" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_smears"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/text_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/title_location"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="24sp" />
+
+            </FrameLayout>
+
+
 
             <EditText
+                android:id="@+id/et_location_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:autofillHints="Write the name of the place"
                 android:background="@drawable/ic_view_background"
+                android:inputType="text"
                 android:padding="8dp"
                 android:text="@string/streets"
                 android:textAlignment="center"
-                android:textSize="30sp"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_home" />
-        </LinearLayout>
+                tools:ignore="LabelFor" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/location_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="?actionBarSize"
+        android:layout_marginBottom="81dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +90,7 @@
         tools:listitem="@layout/recycler_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/fab_add_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -82,7 +101,7 @@
         android:tintMode="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/location_rv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

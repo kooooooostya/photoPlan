@@ -9,7 +9,7 @@
         android:id="@+id/navigation_location"
         android:name="com.example.photoplan.ui.location.LocationFragment"
         android:label="@string/title_location"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_location" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

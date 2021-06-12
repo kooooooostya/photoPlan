@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "678648050202",
+    "project_id": "photoplan-9a868",
+    "storage_bucket": "photoplan-9a868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678648050202:android:99d9bcc2051307757757a3",
+        "android_client_info": {
+          "package_name": "com.example.photoplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678648050202-g1k93ktjclj5r8v7jsrgdso035ntcm2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1DVBTPLk1hjRY9Xo9cPXU8W9mw5QPpdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678648050202-g1k93ktjclj5r8v7jsrgdso035ntcm2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

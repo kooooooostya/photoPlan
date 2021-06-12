@@ -5,35 +5,43 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/corner_radius"
-    android:layout_margin="@dimen/medium_padding"
+    android:layout_margin="@dimen/large_padding"
     app:cardBackgroundColor="@color/bright_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/small_padding">
+        android:padding="@dimen/medium_padding">
 
         <EditText
             android:id="@+id/ed_location_name"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="@string/location_name"
             android:textSize="16sp"
-            android:layout_marginTop="@dimen/small_padding"
-            app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
+
+            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/medium_padding"
+
+            app:layout_constraintEnd_toStartOf="@+id/button_add_image"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.01" />
+            app:layout_constraintVertical_bias="0.01"
+            android:autofillHints="@string/location_name"
+            android:hint="@string/location_name"
+            android:inputType="text"
+            tools:ignore="LabelFor" />
 
         <ImageButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/button_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_add_button_bg"
             android:scaleType="center"
+            android:layout_marginEnd="@dimen/medium_padding"
             android:contentDescription="@string/adds_new_image"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@+id/ed_location_name"
@@ -41,7 +49,8 @@
             app:layout_constraintTop_toTopOf="@+id/ed_location_name" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:id="@+id/rv_images"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_padding"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
