@@ -1,15 +1,20 @@
 package com.example.photoplan.ui.location.adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -61,6 +66,7 @@ class SectionRVAdapter(private val activity: Activity, registry: ActivityResultR
         )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
         val location = presenter.getLocation(position)
 
@@ -70,6 +76,27 @@ class SectionRVAdapter(private val activity: Activity, registry: ActivityResultR
                 indexToInsertImage = holder.adapterPosition
                 getContent.launch("image/*")
             }
+
+            edLocationName.isFocusable = false
+
+
+            edLocationName.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    v.isFocusableInTouchMode = true
+                }
+                v.performClick()
+            }
+
+            cardView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN && edLocationName.isFocusable) {
+                    val imm: InputMethodManager =
+                        cardView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                    edLocationName.isFocusable = false
+                }
+                v.performClick()
+            }
+
             recyclerView.layoutManager = GridLayoutManager(buttonAdd.context, 3)
             adapter = FolderRVAdapter(presenter.getLocation(position))
             recyclerView.adapter = adapter
@@ -85,6 +112,7 @@ class SectionRVAdapter(private val activity: Activity, registry: ActivityResultR
         val edLocationName: EditText = itemView.ed_location_name
         val buttonAdd: ImageButton = itemView.button_add_image
         val recyclerView: RecyclerView = itemView.rv_images
+        val cardView: CardView = itemView.recycler_item_container
 
         lateinit var adapter: FolderRVAdapter
     }

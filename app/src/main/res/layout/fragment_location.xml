@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/location_container"
     tools:context=".ui.location.LocationFragment">
 
     <androidx.cardview.widget.CardView
@@ -24,6 +25,7 @@
             android:paddingRight="@dimen/large_padding">
 
             <FrameLayout
+                android:id="@+id/location_input_name_container"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
                 app:layout_constraintBottom_toTopOf="@+id/et_location_name"
@@ -55,8 +57,6 @@
 
             </FrameLayout>
 
-
-
             <EditText
                 android:id="@+id/et_location_name"
                 android:layout_width="match_parent"
@@ -73,6 +73,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="LabelFor" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

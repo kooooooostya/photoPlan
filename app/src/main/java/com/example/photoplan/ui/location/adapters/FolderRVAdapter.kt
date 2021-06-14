@@ -1,18 +1,13 @@
 package com.example.photoplan.ui.location.adapters
 
-import android.app.Activity
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.photoplan.Location
-import com.example.photoplan.PhotoPlanApplication
 import com.example.photoplan.R
-import com.example.photoplan.ui.ImageDialog.ImageExpandDialog
 import com.example.photoplan.ui.location.presentor.FolderPresenter
 import com.example.photoplan.ui.location.FolderView
 import kotlinx.android.synthetic.main.grid_image_rv_item.view.*

@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/corner_radius"
     android:layout_margin="@dimen/large_padding"
-    app:cardBackgroundColor="@color/bright_gray">
+    app:cardBackgroundColor="@color/bright_gray"
+    android:id="@+id/recycler_item_container">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +16,6 @@
 
         <EditText
             android:id="@+id/ed_location_name"
-            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

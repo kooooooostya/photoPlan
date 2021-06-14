@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.example.photoplan.Location
-import com.example.photoplan.ui.ImageDialog.ImageExpandDialog
+import com.example.photoplan.ui.imageDialog.ImageExpandDialog
 import com.example.photoplan.ui.location.FolderView
 
 @InjectViewState

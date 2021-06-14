@@ -1,5 +1,4 @@
-package com.example.photoplan.ui.ImageDialog
-
+package com.example.photoplan.ui.imageDialog
 
 import android.app.AlertDialog
 import android.content.Context
