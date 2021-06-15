@@ -17,47 +17,47 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.photoplan.Location
 import com.example.photoplan.R
-import com.example.photoplan.ui.location.SectionRVView
-import com.example.photoplan.ui.location.presentor.SectionRVPresenter
 import kotlinx.android.synthetic.main.recycler_item.view.*
 import java.io.IOException
 import java.io.InputStream
 
+class SectionRVAdapter(
+    private val activity: Activity,
+    registry: ActivityResultRegistry,
+    var locationList: ArrayList<Location>
+) :
+    RecyclerView.Adapter<SectionRVAdapter.SectionViewHolder>() {
 
-class SectionRVAdapter(private val activity: Activity, registry: ActivityResultRegistry, locationList: ArrayList<Location>) :
-    RecyclerView.Adapter<SectionRVAdapter.SectionViewHolder>(),
-    SectionRVView {
-
-    @InjectPresenter
-    lateinit var presenter: SectionRVPresenter
-
-    private val getContent = registry.register(SectionRVPresenter.REQUEST_KEY, ActivityResultContracts.GetContent()) { uri: Uri? ->
-        try {
-            val inputStream: InputStream =
-                activity.contentResolver.openInputStream(uri!!)!!
-            presenter.insertImage(
-                indexToInsertImage,
-                Drawable.createFromStream(
-                    inputStream,
-                    uri.toString()
-                )
-            )
-            notifyItemChanged(indexToInsertImage)
-            indexToInsertImage = -1
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+    companion object {
+        const val REQUEST_KEY = "request_key"
     }
-
 
     private var indexToInsertImage = -1
 
-    init {
-        presenter = SectionRVPresenter(locationList)
-    }
+
+    private val getContent =
+        registry.register(REQUEST_KEY, ActivityResultContracts.GetContent()) { uri: Uri? ->
+            try {
+                if (uri != null){
+                    val inputStream: InputStream =
+                        activity.contentResolver.openInputStream(uri)!!
+                    locationList[indexToInsertImage].addImage(
+                        Drawable.createFromStream(
+                            inputStream,
+                            uri.toString()
+                        )
+                    )
+                    notifyItemChanged(indexToInsertImage)
+                    indexToInsertImage = -1
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectionViewHolder {
         return SectionViewHolder(
@@ -68,17 +68,17 @@ class SectionRVAdapter(private val activity: Activity, registry: ActivityResultR
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
-        val location = presenter.getLocation(position)
+        val location = locationList[position]
 
         with(holder) {
             edLocationName.setText(location.name)
+
             buttonAdd.setOnClickListener {
                 indexToInsertImage = holder.adapterPosition
                 getContent.launch("image/*")
             }
 
             edLocationName.isFocusable = false
-
 
             edLocationName.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -93,18 +93,20 @@ class SectionRVAdapter(private val activity: Activity, registry: ActivityResultR
                         cardView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
                     edLocationName.isFocusable = false
+
+                    locationList[holder.adapterPosition].name = edLocationName.text.toString()
                 }
                 v.performClick()
             }
 
             recyclerView.layoutManager = GridLayoutManager(buttonAdd.context, 3)
-            adapter = FolderRVAdapter(presenter.getLocation(position))
+            adapter = FolderRVAdapter(locationList[position])
             recyclerView.adapter = adapter
         }
     }
 
     override fun getItemCount(): Int {
-        return presenter.getItemCount()
+        return locationList.size
     }
 
 

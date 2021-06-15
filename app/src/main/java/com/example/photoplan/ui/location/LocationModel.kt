@@ -1,17 +1,15 @@
 package com.example.photoplan.ui.location
 
-import android.content.Context
-import androidx.core.content.res.ResourcesCompat
 import com.example.photoplan.Location
 import com.example.photoplan.Place
-import com.example.photoplan.R
+import com.example.photoplan.ui.location.presentor.LocationPresenter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-class LocationModel(context: Context) {
+class LocationModel(private val presenter: LocationPresenter) {
 
     companion object{
         private const val dbPath = "db_path"
@@ -23,24 +21,12 @@ class LocationModel(context: Context) {
     var mPlace: Place
 
     init {
-        //loadFromDb()
-
-        val arrayList = ArrayList<Location>()
-        arrayList.add(Location("A", arrayListOf(
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t1, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t2, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t3, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t4, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t5, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t6, null)!!,
-            ResourcesCompat.getDrawable(context.resources,R.drawable.t7, null)!!,
-        )))
-
-        mPlace = Place("Nature", arrayList)
+        mPlace = Place("")
+        loadFromDb()
     }
 
     private fun saveAll(){
-        //dbRef.setValue(mPlace)
+        dbRef.setValue(mPlace)
     }
 
     fun addLocation(location: Location){
@@ -53,12 +39,11 @@ class LocationModel(context: Context) {
         saveAll()
     }
 
-
-
     private fun loadFromDb(){
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                mPlace = snapshot.getValue(Place::class.java)!!
+                mPlace.locationList.addAll((snapshot.getValue(Place::class.java)!!).locationList)
+                updateUi()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -66,5 +51,9 @@ class LocationModel(context: Context) {
             }
 
         })
+    }
+
+    private fun updateUi() {
+        presenter.updateUi()
     }
 }

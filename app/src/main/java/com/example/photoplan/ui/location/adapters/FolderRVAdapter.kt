@@ -5,24 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.photoplan.Location
 import com.example.photoplan.R
-import com.example.photoplan.ui.location.presentor.FolderPresenter
-import com.example.photoplan.ui.location.FolderView
+import com.example.photoplan.ui.imageDialog.ImageExpandDialog
 import kotlinx.android.synthetic.main.grid_image_rv_item.view.*
 
-class FolderRVAdapter(location: Location) :
-    RecyclerView.Adapter<FolderRVAdapter.FolderViewHolder>(),
-    FolderView {
+class FolderRVAdapter(private val location: Location) :
+    RecyclerView.Adapter<FolderRVAdapter.FolderViewHolder>(){
 
-    @InjectPresenter
-    lateinit var presenter: FolderPresenter
-
-    init {
-        presenter = FolderPresenter(location)
-    }
-
+    private var imageExpandDialog = ImageExpandDialog()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
         return FolderViewHolder(
@@ -31,15 +22,15 @@ class FolderRVAdapter(location: Location) :
     }
 
     override fun onBindViewHolder(holder: FolderViewHolder, position: Int) {
-        holder.imageView.setImageDrawable(presenter.getImage(position))
+        holder.imageView.setImageDrawable(location.getImage(position))
 
         holder.imageView.setOnClickListener {
-            presenter.expandImage(holder.imageView.context, holder.adapterPosition)
+            imageExpandDialog.showDialog(it.context, location.getImage(position))
         }
     }
 
     override fun getItemCount(): Int {
-        return presenter.getImagesCount()
+        return location.getImageCount()
     }
 
 

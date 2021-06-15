@@ -1,25 +1,24 @@
 package com.example.photoplan.ui.location.presentor
 
-import android.content.Context
-import com.arellomobile.mvp.MvpPresenter
 import com.example.photoplan.Location
 import com.example.photoplan.ui.location.LocationModel
 import com.example.photoplan.ui.location.LocationView
-import com.example.photoplan.ui.location.adapters.SectionRVAdapter
-import java.util.ArrayList
+import moxy.InjectViewState
+import moxy.MvpPresenter
+import java.util.*
 
+@InjectViewState
+class LocationPresenter : MvpPresenter<LocationView>() {
 
-class LocationPresenter(context: Context): MvpPresenter<LocationView>() {
-
-    private val model = LocationModel(context)
+    private val model = LocationModel(this)
 
     fun updateNameOfSection(newName: String){
         model.changeNameOfStreet(newName)
     }
 
-    fun addFolder(adapter: SectionRVAdapter){
+    fun addFolder(){
         model.addLocation(Location())
-        adapter.notifyItemInserted(adapter.itemCount)
+        viewState.notifyItemInserted()
     }
 
     fun getName(): String{
@@ -28,5 +27,9 @@ class LocationPresenter(context: Context): MvpPresenter<LocationView>() {
 
     fun getLocations(): ArrayList<Location> {
         return model.mPlace.locationList
+    }
+
+    fun updateUi(){
+        viewState.updateUi()
     }
 }

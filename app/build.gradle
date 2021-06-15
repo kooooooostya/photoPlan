@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.photoplan"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -51,8 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //moxy
-    implementation 'com.arello-mobile:moxy:1.5.5'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
-    kapt 'com.arello-mobile:moxy-compiler:1.5.5'
+    implementation 'com.github.moxy-community:moxy-androidx:2.2.2'
+    kapt 'com.github.moxy-community:moxy-compiler:2.2.2'
 
 }

@@ -1,7 +1,11 @@
 package com.example.photoplan.ui.location
 
-import com.arellomobile.mvp.MvpView
+import moxy.MvpView
+import moxy.viewstate.strategy.alias.AddToEndSingle
 
-interface LocationView: MvpView{
-
+@AddToEndSingle
+interface LocationView: MvpView {
+    fun updateUi()
+    fun notifyItemInserted()
+    fun makeToast(message: String)
 }
