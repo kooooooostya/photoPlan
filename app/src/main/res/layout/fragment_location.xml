@@ -2,92 +2,78 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/location_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/location_container"
     tools:context=".ui.location.LocationFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="16dp"
-        app:cardCornerRadius="@dimen/corner_radius"
+        android:background="@drawable/half_rounded"
+        android:orientation="vertical"
+        android:elevation="@dimen/large_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/large_padding"
-            android:paddingTop="@dimen/large_padding"
-            android:paddingRight="@dimen/large_padding">
+        <FrameLayout
+            android:id="@+id/location_input_name_container"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="@dimen/large_padding"
+            android:padding="@dimen/medium_padding">
 
-            <FrameLayout
-                android:id="@+id/location_input_name_container"
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="?actionBarSize"
-                app:layout_constraintBottom_toTopOf="@+id/et_location_name"
-                app:layout_constraintEnd_toEndOf="@+id/et_location_name"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_margin="@dimen/large_padding"
-                android:padding="@dimen/medium_padding"
-                app:layout_constraintStart_toStartOf="@+id/et_location_name"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_smears"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/text_home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/title_location"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textSize="24sp" />
-
-            </FrameLayout>
-
-            <EditText
-                android:id="@+id/et_location_name"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:autofillHints="Write the name of the place"
-                android:background="@drawable/ic_view_background"
-                android:inputType="text"
-                android:padding="8dp"
-                android:text="@string/streets"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_smears"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/text_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/title_location"
                 android:textAlignment="center"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="LabelFor" />
+                android:textAllCaps="true"
+                android:textSize="24sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
-    </androidx.cardview.widget.CardView>
+        <EditText
+            android:id="@+id/et_location_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:autofillHints="Write the name of the place"
+            android:background="@drawable/ic_view_background"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:hint="@string/location_name"
+            tools:ignore="LabelFor" />
+
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/location_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="81dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add_location"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:layout_marginBottom="@dimen/large_padding"
         tools:listitem="@layout/recycler_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -100,9 +86,9 @@
         android:src="@drawable/ic_baseline_add_24"
         android:tint="@color/white"
         android:tintMode="add"
+        android:layout_marginBottom="@dimen/large_padding"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location_rv" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
