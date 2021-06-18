@@ -1,10 +1,7 @@
 package com.example.photoplan.ui.location.adapters
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -12,51 +9,23 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.activity.result.ActivityResultRegistry
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoplan.Location
+import com.example.photoplan.ui.data.Location
 import com.example.photoplan.R
 import kotlinx.android.synthetic.main.recycler_item.view.*
-import java.io.IOException
-import java.io.InputStream
 
-class SectionRVAdapter(
-    private val activity: Activity,
-    registry: ActivityResultRegistry,
-    var locationList: ArrayList<Location>
-) :
+class SectionRVAdapter(var locationList: ArrayList<Location>, private val activityResultLauncher: ActivityResultLauncher<String>) :
     RecyclerView.Adapter<SectionRVAdapter.SectionViewHolder>() {
 
     companion object {
         const val REQUEST_KEY = "request_key"
     }
 
-    private var indexToInsertImage = -1
+    var indexToInsertImage = -1
 
-
-    private val getContent =
-        registry.register(REQUEST_KEY, ActivityResultContracts.GetContent()) { uri: Uri? ->
-            try {
-                if (uri != null){
-                    val inputStream: InputStream =
-                        activity.contentResolver.openInputStream(uri)!!
-                    locationList[indexToInsertImage].addImage(
-                        Drawable.createFromStream(
-                            inputStream,
-                            uri.toString()
-                        )
-                    )
-                    notifyItemChanged(indexToInsertImage)
-                    indexToInsertImage = -1
-                }
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectionViewHolder {
@@ -75,7 +44,7 @@ class SectionRVAdapter(
 
             buttonAdd.setOnClickListener {
                 indexToInsertImage = holder.adapterPosition
-                getContent.launch("image/*")
+                activityResultLauncher.launch("image/*")
             }
 
             edLocationName.isFocusable = false
@@ -86,6 +55,7 @@ class SectionRVAdapter(
                 }
                 v.performClick()
             }
+            edLocationName
 
             cardView.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN && edLocationName.isFocusable) {

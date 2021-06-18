@@ -1,6 +1,8 @@
 package com.example.photoplan.ui.location.presentor
 
-import com.example.photoplan.Location
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import com.example.photoplan.ui.data.Location
 import com.example.photoplan.ui.location.LocationModel
 import com.example.photoplan.ui.location.LocationView
 import moxy.InjectViewState
@@ -31,5 +33,13 @@ class LocationPresenter : MvpPresenter<LocationView>() {
 
     fun updateUi(){
         viewState.updateUi()
+    }
+
+    fun showError(message: String) {
+        viewState.makeToast(message)
+    }
+
+    fun addImage(indexToInsertImage: Int, drawable: Drawable, uri: Uri) {
+        model.insertImage(indexToInsertImage, uri, drawable)
     }
 }

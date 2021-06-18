@@ -1,6 +1,8 @@
 package com.example.photoplan.ui.location
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoplan.R
 import com.example.photoplan.ui.location.adapters.SectionRVAdapter
@@ -15,9 +18,11 @@ import com.example.photoplan.ui.location.presentor.LocationPresenter
 import kotlinx.android.synthetic.main.fragment_location.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
+import java.io.IOException
+import java.io.InputStream
 
 
-class LocationFragment : MvpAppCompatFragment(), LocationView{
+class LocationFragment : MvpAppCompatFragment(), LocationView {
 
 
     @InjectPresenter
@@ -37,10 +42,9 @@ class LocationFragment : MvpAppCompatFragment(), LocationView{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fab_add_location.setOnClickListener{
+        fab_add_location.setOnClickListener {
             presenter.addFolder()
         }
-        et_location_name.setText(presenter.getName())
 
         location_container.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN && et_location_name.isFocusable) {
@@ -53,6 +57,9 @@ class LocationFragment : MvpAppCompatFragment(), LocationView{
             v.performClick()
         }
 
+
+        if(presenter.getName().isNotEmpty()) et_location_name.setText(presenter.getName())
+
         et_location_name.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 v.isFocusableInTouchMode = true
@@ -64,10 +71,34 @@ class LocationFragment : MvpAppCompatFragment(), LocationView{
         et_location_name.isFocusableInTouchMode = false
 
         location_rv.layoutManager = LinearLayoutManager(requireContext())
-        sectionRVAdapter = SectionRVAdapter(
-            requireActivity(),
-            requireActivity().activityResultRegistry,
-            presenter.getLocations()
+
+        sectionRVAdapter = SectionRVAdapter(presenter.getLocations(),
+            requireActivity().activityResultRegistry
+                .register(
+                    SectionRVAdapter.REQUEST_KEY,
+                    ActivityResultContracts.GetContent()
+                ) { uri: Uri? ->
+                    try {
+                        if (uri != null) {
+                            val inputStream: InputStream =
+                                requireActivity().contentResolver.openInputStream(uri)!!
+
+                            presenter.addImage(
+                                sectionRVAdapter.indexToInsertImage,
+                                Drawable.createFromStream(
+                                    inputStream,
+                                    uri.toString()
+                                ),
+                                uri
+                            )
+                            sectionRVAdapter.notifyItemChanged(sectionRVAdapter.indexToInsertImage)
+                            sectionRVAdapter.indexToInsertImage = -1
+                        }
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
         )
         location_rv.adapter = sectionRVAdapter
     }
