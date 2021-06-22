@@ -2,25 +2,24 @@ package com.example.photoplan.ui.location
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.NonNull
-import com.example.photoplan.ui.data.*
+import com.example.photoplan.ui.data.Image
+import com.example.photoplan.ui.data.Location
+import com.example.photoplan.ui.data.Place
+import com.example.photoplan.ui.data.PlaceToSave
 import com.example.photoplan.ui.location.presentor.LocationPresenter
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 
 
 class LocationModel(private val presenter: LocationPresenter) {
 
     companion object {
         private const val dbPath = "db_path"
+        lateinit var instance: LocationModel
     }
 
     private var database = FirebaseDatabase.getInstance()
@@ -29,25 +28,28 @@ class LocationModel(private val presenter: LocationPresenter) {
     private val storage = FirebaseStorage.getInstance()
     private var storageRef: StorageReference = storage.getReference("image_db")
 
+
+
     var mPlace: Place
 
     init {
         mPlace = Place("")
         loadFromDb()
+        instance = this
     }
 
-    private fun saveAll() {
+    fun updateDataInDb() {
         dbRef.setValue(PlaceToSave.toPlaceToSave(mPlace))
     }
 
     fun addLocation(location: Location) {
         mPlace.locationList.add(location)
-        saveAll()
+        updateDataInDb()
     }
 
     fun changeNameOfStreet(newName: String) {
         mPlace.name = newName
-        saveAll()
+        updateDataInDb()
     }
 
     private fun loadFromDb() {
@@ -78,7 +80,7 @@ class LocationModel(private val presenter: LocationPresenter) {
 
         val uploadTask = ref.putFile(uri)
 
-        val urlTask: Task<Uri?> = uploadTask.continueWithTask { task ->
+        uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
                 presenter.showError(task.exception?.message ?: "Error")
             }
@@ -91,7 +93,7 @@ class LocationModel(private val presenter: LocationPresenter) {
                 val downloadUri = task.result
                 mPlace.locationList[indexToInsertImage]
                     .changeLastUriImage(downloadUri!!.toString())
-                saveAll()
+                updateDataInDb()
             }
         }
     }
@@ -100,5 +102,4 @@ class LocationModel(private val presenter: LocationPresenter) {
         mPlace.locationList[indexToInsertImage].addImage(Image("uri", drawable))
         insertImageToDb(uri, indexToInsertImage)
     }
-
 }

@@ -11,22 +11,29 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoplan.ui.data.Location
 import com.example.photoplan.R
+import com.example.photoplan.ui.data.Location
+import com.example.photoplan.ui.location.LocationModel
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.recycler_item.view.*
 
-class SectionRVAdapter(var locationList: ArrayList<Location>, private val activityResultLauncher: ActivityResultLauncher<String>) :
+class SectionRVAdapter(
+    var locationList: ArrayList<Location>,
+    private val activityResultLauncher: ActivityResultLauncher<String>
+) :
     RecyclerView.Adapter<SectionRVAdapter.SectionViewHolder>() {
 
     companion object {
         const val REQUEST_KEY = "request_key"
     }
 
+    private var lastLocationList = ArrayList<Location>()
+    private var isSelectMode = false
+
     var indexToInsertImage = -1
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectionViewHolder {
         return SectionViewHolder(
@@ -40,6 +47,8 @@ class SectionRVAdapter(var locationList: ArrayList<Location>, private val activi
         val location = locationList[position]
 
         with(holder) {
+            holder.location = location
+
             edLocationName.setText(location.name)
 
             buttonAdd.setOnClickListener {
@@ -70,8 +79,25 @@ class SectionRVAdapter(var locationList: ArrayList<Location>, private val activi
             }
 
             recyclerView.layoutManager = GridLayoutManager(buttonAdd.context, 3)
-            adapter = FolderRVAdapter(locationList[position])
+            adapter = FolderRVAdapter(locationList[position], this, isSelectMode)
             recyclerView.adapter = adapter
+
+            removeFab.setOnClickListener {
+                locationList.last().removeSelectedImages(adapter.selectedList)
+
+                locationList.addAll(lastLocationList)
+
+                val model = LocationModel.instance
+                model.updateDataInDb()
+
+                adapter.selectedList
+
+                isSelectMode = false
+
+                notifyDataSetChanged()
+
+                hideButton()
+            }
         }
     }
 
@@ -79,14 +105,35 @@ class SectionRVAdapter(var locationList: ArrayList<Location>, private val activi
         return locationList.size
     }
 
-
-    class SectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        DeleteButtonManager {
         val edLocationName: EditText = itemView.ed_location_name
         val buttonAdd: ImageButton = itemView.button_add_image
         val recyclerView: RecyclerView = itemView.rv_images
         val cardView: CardView = itemView.recycler_item_container
+        val removeFab: ExtendedFloatingActionButton = itemView.fab_delete
+
+        lateinit var location: Location
 
         lateinit var adapter: FolderRVAdapter
-    }
 
+        override fun hideButton() {
+            removeFab.isVisible = false
+        }
+
+        override fun openButton() {
+            lastLocationList = locationList.clone() as ArrayList<Location>
+            lastLocationList.remove(location)
+            locationList.clear()
+            locationList.add(location)
+
+            adapter.isSelectMode = true
+
+            isSelectMode = true
+
+            notifyDataSetChanged()
+
+            removeFab.isVisible = true
+        }
+    }
 }

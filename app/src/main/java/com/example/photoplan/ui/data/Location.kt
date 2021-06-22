@@ -17,4 +17,8 @@ class Location(var name: String = "", private val imageList: ArrayList<Image> = 
     fun changeLastUriImage(uri: String) {
         imageList.last().uri = uri
     }
+
+    fun removeSelectedImages(selectedList: java.util.ArrayList<Image>) {
+        imageList.removeAll(selectedList)
+    }
 }
